@@ -1,0 +1,15 @@
+<h1>支出の入力</h1>
+
+<%= form_with model: @expense, url: expenses_path do |f| %>
+  <div>
+    <%= f.label :date, '日付' %>
+    <%= f.date_field :date, value: params[:date] || Date.today %>
+  </div>
+  <div>
+    <%= f.label :amount, '金額' %>
+    <%= f.number_field :amount %>
+  </div>
+  <div>
+    <%= f.submit '保存' %>
+  </div>
+<% end %>
