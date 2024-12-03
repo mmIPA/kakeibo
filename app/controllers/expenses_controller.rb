@@ -1,5 +1,10 @@
 class ExpensesController < ApplicationController
   def index
+    start_date = Date.today.beginning_of_month
+    end_date = Date.today.end_of_month
+
+    @monthly_total = Expense.where(date: start_date..end_date).sum(:payment)
+    
     @expenses = Expense.all
   end
 
