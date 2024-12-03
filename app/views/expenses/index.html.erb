@@ -1,30 +1,31 @@
 <h1 class="text-center text-primary my-4">家計簿カレンダー</h1>
 
-<table class="table table-bordered text-center">
-  <thead class="thead-light">
-    <tr>
-      <% Date::DAYNAMES.each do |day| %>
-        <th><%= day %></th>
-      <% end %>
-    </tr>
-  </thead>
-  <tbody>
-    <% start_date = Date.today.beginning_of_month %>
-    <% end_date = Date.today.end_of_month %>
-    <% (start_date..end_date).to_a.in_groups_of(7) do |week| %>
-      <tr>
-        <% week.each do |date| %>
-          <% if date %>
-            <td class="p-2">
-              <strong><%= date.day %></strong><br>
-              <small>合計: <%= Expense.where(date: date).sum(:payment) %>円</small><br>
-              <%= link_to '入力', new_expense_path(date: date), class: "btn btn-sm btn-primary mt-2" %>
-            </td>
-          <% else %>
-            <td></td>
-          <% end %>
-        <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<!-- カレンダーを描画する要素 -->
+<div id="calendar"></div>
+
+<!-- モーダル (金額入力フォーム) -->
+<div id="expenseModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">支出を入力</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="expenseForm" action="/expenses" method="POST">
+          <!-- CSRFトークン -->
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <!-- 日付を指定する隠しフィールド -->
+          <input type="hidden" name="expense[date]" id="expense_date">
+          <div class="form-group">
+            <label for="expense_payment">金額</label>
+            <input type="number" name="expense[payment]" id="expense_payment" class="form-control" required>
+          </div>
+          <button type="submit" class="btn btn-primary">保存</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -16,3 +16,28 @@ import "../stylesheets/application";
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+
+import { Calendar } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import $ from "jquery";
+global.$ = global.jQuery = $;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const calendarEl = document.getElementById('calendar');
+
+  if (calendarEl) {
+    const calendar = new Calendar(calendarEl, {
+      plugins: [dayGridPlugin, interactionPlugin],
+      initialView: 'dayGridMonth',
+      events: '/expenses.json', // JSON形式のイベントを取得
+      dateClick: function(info) {
+        // 日付クリック時にモーダルを表示
+        document.getElementById('expense_date').value = info.dateStr;
+        $('#expenseModal').modal('show');
+      },
+    });
+
+    calendar.render();
+  }
+});
