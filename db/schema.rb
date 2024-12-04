@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_11_30_025629) do
+ActiveRecord::Schema.define(version: 2024_12_04_120201) do
+
+  create_table "events", force: :cascade do |t|
+    t.string "title"
+    t.datetime "start"
+    t.datetime "end"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "expenses", force: :cascade do |t|
     t.date "date"

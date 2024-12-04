@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
-  root to: 'home#index' 
-  resources :expenses, only: [:index, :new, :create]
+  root to: "events#index"
+  get '/events', to: 'events#index', defaults: { format: 'json' }
+  resources :expenses
 end
